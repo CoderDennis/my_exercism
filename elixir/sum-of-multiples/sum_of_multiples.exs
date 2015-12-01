@@ -7,12 +7,13 @@ defmodule SumOfMultiples do
   @spec to(non_neg_integer, [non_neg_integer]) :: non_neg_integer
   def to(limit, factors \\ [3, 5]) do
     factors
-    |> Enum.flat_map(fn(f) ->
-                       Stream.iterate(f, &(&1 + f))
-                       |> Enum.take_while(&(&1 < limit))
-                     end)
+    |> Stream.flat_map(&multiples(&1, limit))
+    |> Stream.uniq
     |> Enum.sum
   end
 
-
+  defp multiples(n, limit) do
+    Stream.iterate(n, &(&1 + n))
+    |> Enum.take_while(&(&1 < limit))
+  end
 end
