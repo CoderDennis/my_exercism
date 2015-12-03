@@ -3,10 +3,9 @@ defmodule Allergies do
   List the allergies for which the corresponding flag bit is true.
   """
   @spec list(non_neg_integer) :: [String.t]
-  def list(0), do: []
   def list(flags) do
     do_list(<<flags>>)
-    |> Enum.filter(fn {_, x} -> x == 1 end)
+    |> Enum.reject(fn {_, x} -> x == 0 end)
     |> Enum.map(fn {val, _} -> val end)
   end
 

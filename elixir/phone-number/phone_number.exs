@@ -84,7 +84,9 @@ defmodule Phone do
     |> format_number
   end
 
-  defp format_number(<<area :: binary-size(3), exchange :: binary-size(3), line :: binary>>) do
+  defp format_number(<<area :: binary-size(3),
+                     exchange :: binary-size(3),
+                     line :: binary>>) do
     "(#{area}) #{exchange}-#{line}"
   end
 end

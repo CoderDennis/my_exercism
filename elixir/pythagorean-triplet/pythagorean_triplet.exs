@@ -5,7 +5,7 @@ defmodule Triplet do
   """
   @spec sum([non_neg_integer]) :: non_neg_integer
   def sum(triplet) do
-
+    Enum.sum(triplet)
   end
 
   @doc """
@@ -13,7 +13,7 @@ defmodule Triplet do
   """
   @spec product([non_neg_integer]) :: non_neg_integer
   def product(triplet) do
-
+    Enum.reduce(triplet, &(&1 * &2))
   end
 
   @doc """
@@ -21,7 +21,7 @@ defmodule Triplet do
   """
   @spec pythagorean?([non_neg_integer]) :: boolean
   def pythagorean?([a, b, c]) do
-
+    :math.pow(a, 2) + :math.pow(b, 2) == :math.pow(c, 2)
   end
 
   @doc """
@@ -29,7 +29,8 @@ defmodule Triplet do
   """
   @spec generate(non_neg_integer, non_neg_integer) :: [list(non_neg_integer)]
   def generate(min, max) do
-
+    (for a <- min..max, b <- a..max, c <- b..max, do: [a,b,c])
+    |> Enum.filter(&pythagorean?/1)
   end
 
   @doc """
@@ -37,6 +38,7 @@ defmodule Triplet do
   """
   @spec generate(non_neg_integer, non_neg_integer, non_neg_integer) :: [list(non_neg_integer)]
   def generate(min, max, sum) do
-   
+    generate(min, max)
+    |> Enum.filter(&(sum(&1) == sum))
   end
 end

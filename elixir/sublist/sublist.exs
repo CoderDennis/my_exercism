@@ -13,9 +13,9 @@ defmodule Sublist do
     end
   end
 
-  defp do_compare_left([], []), do: :equal
-  defp do_compare_left([], _),  do: :sublist
-  defp do_compare_left(_, []),  do: :superlist
+  defp do_compare_left(x, x),  do: :equal
+  defp do_compare_left([], _), do: :sublist
+  defp do_compare_left(_, []), do: :superlist
   defp do_compare_left([a], [b]) when a != b, do: :unequal
   defp do_compare_left([head|tail_a] = a, [head|tail_b]) do
     case left_side_match(tail_a, tail_b) do

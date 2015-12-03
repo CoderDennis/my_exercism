@@ -4,7 +4,7 @@ defmodule Grains do
   """
   @spec square(pos_integer) :: pos_integer
   def square(number) do
-
+    Enum.reduce(1..number, fn(_x, acc) -> acc * 2 end)
   end
 
   @doc """
@@ -12,6 +12,8 @@ defmodule Grains do
   """
   @spec total :: pos_integer
   def total do
-
+    1..64
+    |> Enum.map(&square/1)
+    |> Enum.sum
   end
 end
