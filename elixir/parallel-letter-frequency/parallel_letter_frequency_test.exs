@@ -11,7 +11,7 @@ ExUnit.configure exclude: :pending, trace: true
 # list of texts and the number of workers to use in parallel.
 
 defmodule FrequencyTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   # Poem by Friedrich Schiller. The corresponding music is the European Anthem.
   @ode_an_die_freude """
@@ -61,7 +61,7 @@ defmodule FrequencyTest do
     assert freq([]) == %{}
   end
 
-  # @tag :pending
+  @tag :pending
   test "one letter" do
     assert freq(["a"]) == %{"a" => 1}
   end
