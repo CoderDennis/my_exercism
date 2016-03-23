@@ -61,17 +61,17 @@ defmodule FrequencyTest do
     assert freq([]) == %{}
   end
 
-  @tag :pending
+  # @tag :pending
   test "one letter" do
     assert freq(["a"]) == %{"a" => 1}
   end
 
-  @tag :pending
+  # @tag :pending
   test "case insensitivity" do
     assert freq(["aA"]) == %{"a" => 2}
   end
 
-  @tag :pending
+  # @tag :pending
   test "many empty texts still mean no letters" do
     assert freq(List.duplicate("  ", 10000)) == %{}
   end
