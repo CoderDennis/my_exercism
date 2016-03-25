@@ -26,16 +26,13 @@ defmodule Frequency do
     |> String.strip
     |> String.downcase
     |> String.codepoints
+    |> Enum.filter(&is_letter/1)
     |> frequency_of_letters(%{})
   end
 
   defp frequency_of_letters([], acc), do: acc
   defp frequency_of_letters([h | t], acc) do
-    new_acc = case is_letter(h) do
-                true -> Map.update(acc, h, 1, &(&1 + 1))
-                false -> acc
-    end
-    frequency_of_letters(t, new_acc)
+    frequency_of_letters(t, Map.update(acc, h, 1, &(&1 + 1)))
   end
 
   defp is_letter(l) do
