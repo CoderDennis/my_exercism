@@ -9,12 +9,26 @@ defmodule Frequency do
   @spec frequency([String.t], pos_integer) :: Map
   def frequency([], _), do: %{}
   def frequency([text], _), do: frequency_for_text(text)
-  def frequency(texts, _workers) do
+  def frequency(texts, workers) do
+    texts
+    |> Enum.chunk(workers, workers, [])
+    |> Enum.map(&(frequency(&1)))
+    |> merge_results()
+  end
+
+  @doc """
+  Simply creates one task per text.
+  """
+  def frequency(texts) do
     texts
     |> Enum.map(fn t -> Task.async(__MODULE__, :frequency_for_text, [t]) end)
     |> Task.yield_many()
     |> Enum.map(fn {_task, {:ok, result}} -> result end)
-    |> Enum.reduce(fn(x, acc) ->
+    |> merge_results()
+  end
+
+  defp merge_results(results) do
+    Enum.reduce(results, fn(x, acc) ->
       Map.merge(acc, x, fn _k, v1, v2 ->
         v1 + v2
       end)
