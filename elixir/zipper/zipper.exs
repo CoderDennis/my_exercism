@@ -15,9 +15,11 @@ defmodule Zipper do
   alias __MODULE__, as: Z
   alias BinTree, as: BT
   @moduledoc """
-  Can this be implemented with only a trail that acts like a stack?
+  The only property needed is trail, which is a list that acts like a stack.
 
   The head of the trail is the focused node.
+
+  The last item in the list is the whole tree.
   """
   @type t :: %Zipper{ trail: [BT.t] }
   defstruct trail: []
@@ -44,35 +46,55 @@ defmodule Zipper do
   Get the left child of the focus node, if any.
   """
   @spec left(Z.t) :: Z.t | nil
-  def left(z), do: nil
+  def left(%Z{trail: [%BT{left: nil}|_]}), do: nil
+  def left(%Z{trail: [f|_] = trail}), do: %Z{trail: [f.left | trail]}
 
   @doc """
   Get the right child of the focus node, if any.
   """
   @spec right(Z.t) :: Z.t | nil
-  def right(z), do: nil
+  def right(%Z{trail: [%BT{right: nil}|_]}), do: nil
+  def right(%Z{trail: [f|_] = trail}), do: %Z{trail: [f.right | trail]}
 
   @doc """
   Get the parent of the focus node, if any.
   """
   @spec up(Z.t) :: Z.t | nil
-  def up(z), do: nil
+  def up(%Z{trail: [_bt]}), do: nil
+  def up(%Z{trail: [_|trail_tail]}), do: %Z{trail: trail_tail}
 
   @doc """
   Set the value of the focus node.
   """
   @spec set_value(Z.t, any) :: Z.t
-  def set_value(z, v), do: nil
+  def set_value(%Z{trail: [f | trail_tail]}, v) do
+    set_focus(f, %{f | value: v}, trail_tail)
+  end
 
   @doc """
   Replace the left child tree of the focus node.
   """
   @spec set_left(Z.t, BT.t) :: Z.t
-  def set_left(z, l), do: nil
+  def set_left(%Z{trail: [f | trail_tail]}, l) do
+    set_focus(f, %{f | left: l}, trail_tail)
+  end
 
   @doc """
   Replace the right child tree of the focus node.
   """
   @spec set_right(Z.t, BT.t) :: Z.t
-  def set_right(z, r), do: nil
+  def set_right(%Z{trail: [f | trail_tail]}, r) do
+    set_focus(f, %{f | right: r}, trail_tail)
+  end
+
+  @doc """
+  The parent of a new focus node must be updated to point to it.
+  """
+  defp set_focus(_old, new, []), do: %Z{trail: [new]}
+  defp set_focus(old, new, [%BT{left: old} = parent | tail]) do
+    %Z{trail: [new | [%{parent | left: new} | tail]]}
+  end
+  defp set_focus(old, new, [%BT{right: old} = parent | tail]) do
+    %Z{trail: [new | [%{parent | right: new} | tail]]}
+  end
 end
