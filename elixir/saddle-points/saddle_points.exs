@@ -37,16 +37,34 @@ defmodule Matrix do
   @doc """
   Calculates all the saddle points from a string
   representation of a matrix
+
+  18  3 39 19  91
+  38 10  8 77 320
+   3  4  8  6   7
   """
   @spec saddle_points(String.t()) :: [{integer, integer}]
   def saddle_points(str) do
     rows = rows(str)
-
+    cols = columns_from_rows(rows)
+    rows
+    |> Enum.map(&max_with_index/1)
+    |> Enum.with_index()
+    |> Enum.filter_map(fn {{row_max, c}, r} ->
+      (cols
+      |> Enum.at(c)
+      |> min_with_index()) == {row_max, r}
+    end, fn {{_, c}, r} -> {r , c} end)
   end
 
   defp max_with_index(list) do
     list
     |> Enum.with_index()
     |> Enum.max_by(fn {v, _i} -> v end)
+  end
+
+  defp min_with_index(list) do
+    list
+    |> Enum.with_index()
+    |> Enum.min_by(fn {v, _i} -> v end)
   end
 end

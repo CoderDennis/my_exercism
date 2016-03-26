@@ -56,7 +56,7 @@ defmodule SaddlePointsTest do
     assert saddle_points == [{0, 1}]
   end
 
-  @tag :pending
+  # @tag :pending
   test "another saddle point" do
     saddle_points = Matrix.saddle_points("18 3 39 19 91\n38 10 8 77 320\n3 4 8 6 7")
     assert saddle_points == [{2, 2}]
