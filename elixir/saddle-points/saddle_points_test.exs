@@ -62,7 +62,7 @@ defmodule SaddlePointsTest do
     assert saddle_points == [{2, 2}]
   end
 
-  @tag :pending
+  # @tag :pending
   test "multiple saddle points" do
     saddle_points = Matrix.saddle_points("4 5 4\n3 5 5\n1 5 4")
     assert saddle_points == [{0, 1}, {1, 1}, {2, 1}]
