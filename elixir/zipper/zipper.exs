@@ -21,10 +21,10 @@ defmodule BinTree do
   @spec replace_node(BT.t, BT.t, BT.t) :: BT.t
   def replace_node(nil, _, _), do: nil
   def replace_node(bt, bt, new), do: new
-  def replace_node(%BinTree{left: left, right: right} = bt, old, new) do
+  def replace_node(bt, old, new) do
     %{bt |
-      left: replace_node(left, old, new),
-      right: replace_node(right, old, new)}
+      left: replace_node(bt.left, old, new),
+      right: replace_node(bt.right, old, new)}
   end
 end
 
