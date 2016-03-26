@@ -19,7 +19,7 @@ defmodule Zipper do
 
   The head of the trail is the focused node.
 
-  The last item in the list is the whole tree.
+  The last item in the list is the root of the tree.
   """
   @type t :: %Zipper{ trail: [BT.t] }
   defstruct trail: []
@@ -68,7 +68,7 @@ defmodule Zipper do
   """
   @spec set_value(Z.t, any) :: Z.t
   def set_value(%Z{trail: [f | trail_tail]}, v) do
-    set_focus(f, %{f | value: v}, trail_tail)
+    %Z{trail: update_node(f, %{f | value: v}, trail_tail)}
   end
 
   @doc """
@@ -76,7 +76,7 @@ defmodule Zipper do
   """
   @spec set_left(Z.t, BT.t) :: Z.t
   def set_left(%Z{trail: [f | trail_tail]}, l) do
-    set_focus(f, %{f | left: l}, trail_tail)
+    %Z{trail: update_node(f, %{f | left: l}, trail_tail)}
   end
 
   @doc """
@@ -84,17 +84,18 @@ defmodule Zipper do
   """
   @spec set_right(Z.t, BT.t) :: Z.t
   def set_right(%Z{trail: [f | trail_tail]}, r) do
-    set_focus(f, %{f | right: r}, trail_tail)
+    %Z{trail: update_node(f, %{f | right: r}, trail_tail)}
   end
 
   @doc """
-  The parent of a new focus node must be updated to point to it.
+  The parent of a new node must be updated to point to it.
+  This must be done recursively up the tree.
   """
-  defp set_focus(_old, new, []), do: %Z{trail: [new]}
-  defp set_focus(old, new, [%BT{left: old} = parent | tail]) do
-    %Z{trail: [new | [%{parent | left: new} | tail]]}
+  defp update_node(_old, new, []), do: [new]
+  defp update_node(old, new, [%BT{left: old} = parent | tail]) do
+    [new | update_node(parent, %{parent | left: new}, tail)]
   end
-  defp set_focus(old, new, [%BT{right: old} = parent | tail]) do
-    %Z{trail: [new | [%{parent | right: new} | tail]]}
+  defp update_node(old, new, [%BT{right: old} = parent | tail]) do
+    [new | update_node(parent, %{parent | right: new}, tail)]
   end
 end
