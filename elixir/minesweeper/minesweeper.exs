@@ -8,14 +8,20 @@ defmodule Minesweeper do
   def annotate([]), do: []
   def annotate(board) do
     board
-    |> Enum.with_index()
-    |> Enum.flat_map(&parse_line/1)
-    |> Enum.into(%{})
+    |> map_board()
     |> increment_neighbor_values()
     |> display_board()
   end
 
-  @spec parse_line({String.t, Integer}) :: [Sq.t]
+  @spec map_board([String.t]) :: %{{integer, integer} => pid}
+  defp map_board(board) do
+    board
+    |> Enum.with_index()
+    |> Enum.flat_map(&parse_line/1)
+    |> Enum.into(%{})
+  end
+
+  @spec parse_line({String.t, integer}) :: [%{{integer, integer} => pid}]
   defp parse_line({line, row}) do
     line
     |> String.codepoints()
@@ -40,7 +46,7 @@ defmodule Minesweeper do
                          end
                        end
                  end)
-    board_map
+    board_map # return board_map to enable pipeline
   end
 
   defp display_board(board_map) do
@@ -54,6 +60,8 @@ end
 defmodule Minesweeper.Square do
   use GenServer
   alias __MODULE__, as: Sq
+
+  @type t :: %Sq{value: integer}
   defstruct value: nil
 
   def start_link( v ) when is_integer(v) do
@@ -61,18 +69,18 @@ defmodule Minesweeper.Square do
   end
   def start_link("*"), do: start_link(-1)
   def start_link(" "), do: start_link( 0)
-  def start_link( v ), do: start_link(String.to_integer(v))
+  # def start_link( v ), do: start_link(String.to_integer(v))
 
   def init([sq]) do
     {:ok, sq}
   end
 
-  def increment(square) do
-    GenServer.cast(square, :increment)
+  def increment(square_pid) do
+    GenServer.cast(square_pid, :increment)
   end
 
-  def read(square) do
-    GenServer.call(square, :read)
+  def read(square_pid) do
+    GenServer.call(square_pid, :read)
   end
 
   def handle_cast(_, %Sq{value: -1} = sq), do: {:noreply, sq}
@@ -81,15 +89,11 @@ defmodule Minesweeper.Square do
   end
 
   def handle_call(:read, _from, sq) do
-    {:reply, to_string(sq), sq}
+    {:reply, value_to_string(sq), sq}
   end
 
-end
+  defp value_to_string(%Sq{value: -1}), do: "*"
+  defp value_to_string(%Sq{value:  0}), do: " "
+  defp value_to_string(%Sq{value:  v}), do: "#{v}"
 
-defimpl String.Chars, for: Minesweeper.Square do
-  alias Minesweeper.Square, as: Sq
-  def to_string(sq, _opts), do: __MODULE__.to_string(sq)
-  def to_string(%Sq{value: -1}), do: "*"
-  def to_string(%Sq{value:  0}), do: " "
-  def to_string(sq), do: "#{sq.value}"
 end
