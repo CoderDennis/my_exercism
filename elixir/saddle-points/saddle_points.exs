@@ -39,9 +39,9 @@ defmodule Matrix do
   def saddle_points(str) do
     rows = rows(str)
     cols = columns_from_rows(rows)
-    for x <- 0..length(rows)-1,
-        y <- 0..length(cols)-1,
-        Enum.max(Enum.at(rows, x)) == Enum.min(Enum.at(cols, y)),
+    for {row, x} <- Enum.with_index(rows),
+        {col, y} <- Enum.with_index(cols),
+        Enum.max(row) == Enum.min(col),
         do: {x, y}
   end
 
