@@ -18,8 +18,7 @@ defmodule Atbash do
     |> to_char_list
     |> Enum.map(&encode_char/1)
     |> Enum.chunk(5, 5, [])
-    |> Enum.intersperse(" ")
-    |> Enum.join
+    |> Enum.join(" ")
   end
 
   defp encode_char(c) when c < ?a, do: c
