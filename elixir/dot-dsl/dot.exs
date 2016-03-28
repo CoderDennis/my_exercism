@@ -22,11 +22,11 @@ defmodule Dot do
   def parse({name, _, nil}), do: %G{nodes: [{name, []}]}
   def parse({name, _, [opts]}) do
     unless Keyword.keyword?(opts) do
-      raise ArgumentError
+      raise ArgumentError, message: "Invalid Keyword: #{inspect opts}"
     end
     %G{nodes: [{name, opts}]}
   end
-  def parse(_), do: raise ArgumentError
+  def parse(x), do: raise ArgumentError, message: "Invalid Statement: #{inspect x}"
 
   @spec merge_graphs([G.t]) :: G.t
   defp merge_graphs(graphs) do
