@@ -4,14 +4,14 @@ end
 
 defmodule Dot do
   defmacro graph(do: block) do
-    x = Macro.to_string(block)
+    nodes = parse(block)
     quote do
-      %Graph{nodes: Dot.node(unquote(x))}
+      %Graph{nodes: unquote(nodes)}
     end
   end
 
-  def node("nil"), do: []
-  def node(name) do
-    [{String.to_atom(name), []}]
+  def parse(nil), do: []
+  def parse({name, _, _}) do
+    [{name, []}]
   end
 end
