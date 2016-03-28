@@ -28,11 +28,11 @@ defmodule Dot do
   end
   def parse(_), do: raise ArgumentError
 
-  @spec merge_graphs([Graph.t]) :: Graph.t
+  @spec merge_graphs([G.t]) :: G.t
   defp merge_graphs(graphs) do
     Enum.reduce(graphs, fn g, acc ->
       Map.merge(g, acc, fn
-        :__struct__, v1, _v2 -> v1
+        _k, v1, v1 -> v1
         _k, v1, v2 -> Enum.concat(v1, v2) |> Enum.sort()
       end)
     end)
