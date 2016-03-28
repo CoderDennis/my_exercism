@@ -45,7 +45,7 @@ defmodule DotTest do
     assert %Graph{attrs: [foo: 1]} == exprt(Dot.graph do graph [foo: 1] end)
   end
 
-  @tag :pending
+  # @tag :pending
   test "graph with attributes" do
     assert %Graph{
       attrs: [bar: true, foo: 1, title: "Testing Attrs"],
@@ -67,7 +67,7 @@ defmodule DotTest do
     end)
   end
 
-  @tag :pending
+  # @tag :pending
   test "keywords stuck to graph without space" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -76,7 +76,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "keywords stuck to node without space" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -85,7 +85,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "keywords stuck to edge without space" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -94,7 +94,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "invalid statement: int" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -104,7 +104,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "invalid statement: list" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -113,7 +113,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "invalid statement: qualified atom" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -122,7 +122,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "invalid statement: graph with no keywords" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -131,7 +131,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "two attribute lists" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -140,7 +140,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "non-keyword attribute list" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
@@ -149,7 +149,7 @@ defmodule DotTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "int edge" do
     assert_raise ArgumentError, fn ->
       exprt(Dot.graph do
