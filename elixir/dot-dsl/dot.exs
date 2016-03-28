@@ -5,15 +5,16 @@ end
 defmodule Dot do
   defmacro graph(do: block) do
     IO.inspect(block)
-    {attrs, nodes, edges} = parse(block)
-    quote do
-      %Graph{attrs: unquote(attrs), nodes: unquote(nodes), edges: unquote(edges)}
+    quote bind_quoted: [
+      block: Macro.escape(block, unquote: false)
+    ] do
+      Dot.parse(block)
     end
   end
 
-  def parse(nil), do: {[], [], []}
-  def parse({:graph, _, [attrs]}), do: {attrs, [], []}
-  # def parse({:--, _, [{a, _, _}, {b, _, _}]}), do: {[], [], [a, b, []]}
-  def parse({name, _, nil}), do: {[], [{name, []}], []}
-  def parse({name, _, [opts]}), do: {[], [{name, opts}], []}
+  def parse(nil), do: %Graph{}
+  def parse({:graph, _, [attrs]}), do: %Graph{attrs: attrs}
+  def parse({:--, _, [{a, _, _}, {b, _, _}]}), do: %Graph{edges: [{a, b, []}]}
+  def parse({name, _, nil}), do: %Graph{nodes: [{name, []}]}
+  def parse({name, _, [opts]}), do: %Graph{nodes: [{name, opts}]}
 end
