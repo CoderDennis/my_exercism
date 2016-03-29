@@ -8,7 +8,6 @@ import Char
 import Random
 import Bob
 
-import Graphics.Element exposing (Element)
 
 tests : Test
 tests =
@@ -72,8 +71,6 @@ gibberishQuestion length =
   (gibberish length anyCharacter) ++ "?"
 
 
-main : Element
-main = elementRunner tests
--- port runner : Signal (Task.Task x ())
--- port runner =
---   Console.run (consoleRunner tests)
+port runner : Signal (Task.Task x ())
+port runner =
+  Console.run (consoleRunner tests)

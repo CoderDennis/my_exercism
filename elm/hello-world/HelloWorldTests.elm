@@ -1,10 +1,10 @@
 module Main (..) where
 
--- import Task
--- import Console
+import Task
+import Console
 import ElmTest exposing (..)
 import HelloWorld exposing (helloWorld)
-import Graphics.Element exposing (Element)
+
 
 tests : Test
 tests =
@@ -16,9 +16,6 @@ tests =
     ]
 
 
--- port runner : Signal (Task.Task x ())
--- port runner =
---   Console.run (consoleRunner tests)
-
-main : Element
-main = elementRunner tests
+port runner : Signal (Task.Task x ())
+port runner =
+  Console.run (consoleRunner tests)
