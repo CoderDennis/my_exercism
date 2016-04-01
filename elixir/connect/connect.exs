@@ -6,6 +6,10 @@ defmodule Connect do
   """
   @spec result_for([String.t]) :: :none | :black | :white
   def result_for(board) do
-
+    :none
   end
+end
+
+defmodule Board do
+  
 end

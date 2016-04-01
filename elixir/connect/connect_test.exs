@@ -24,7 +24,7 @@ defmodule ConnectTest do
     assert Connect.result_for(board) == :none
   end
 
-  @tag :pending
+  # @tag :pending
   test "1x1 board with black stone" do
     board = ["X"]
     assert Connect.result_for(board) == :black
