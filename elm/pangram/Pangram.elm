@@ -1,7 +1,7 @@
 module Pangram where
 
-import String exposing (toLower, toList, fromList, contains)
-import Set exposing (fromList, toList)
+import String
+import Set
 
 allLetters =
   "abcdefghijklmnopqrstuvwxyz"
