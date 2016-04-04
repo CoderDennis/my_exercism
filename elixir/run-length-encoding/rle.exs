@@ -9,14 +9,14 @@ defmodule RunLengthEncoder do
   @spec encode(String.t) :: String.t
   def encode(string) do
     string
-    |> to_char_list
+    |> String.codepoints
     |> do_encode(1)
   end
 
-  @spec do_encode(String.t, integer) :: String.t
+  @spec do_encode([String.codepoint], integer) :: String.t
   defp do_encode([], _), do: ""
   defp do_encode([h|t], count) when h == hd(t), do: do_encode(t, count+1)
-  defp do_encode([h|t], count), do: "#{count}#{[h]}" <> do_encode(t, 1)
+  defp do_encode([h|t], count), do: "#{count}#{h}" <> do_encode(t, 1)
 
   @spec decode(String.t) :: String.t
   def decode(string) do
