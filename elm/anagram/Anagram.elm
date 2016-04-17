@@ -6,22 +6,23 @@ import List
 detect : String -> List String -> List String
 detect word possibleAnagrams =
   let
-    wordLower =
-      String.toLower word
-    wordChars =
-      sortChars wordLower
+    isAnagram = isAnagramOfWord word
   in
-    List.filter (isAnagram wordLower wordChars) possibleAnagrams
+    List.filter isAnagram possibleAnagrams
 
-isAnagram word chars anagram =
+isAnagramOfWord : String -> (String -> Bool)
+isAnagramOfWord word =
   let
-    anagram' =
-      String.toLower anagram
+    loweredWord = String.toLower word
+    sortedChars = sortChars word
   in
-     word /= anagram' &&
-    chars == sortChars anagram'
+    \candidate -> loweredWord /= String.toLower candidate &&
+                  sortedChars == sortChars candidate
 
+sortChars : String -> List Char
 sortChars word =
+  -- Debug.log(word)
   word
+    |> String.toLower
     |> String.toList
     |> List.sort
