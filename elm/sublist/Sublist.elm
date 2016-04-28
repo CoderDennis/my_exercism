@@ -1,7 +1,6 @@
 module Sublist (version, sublist, ListComparison(..)) where
 
-import Trampoline exposing(trampoline, Trampoline(..))
-import List
+import List exposing (isEmpty, length, take, drop)
 
 type ListComparison = Equal | Sublist | Superlist | Unequal
 
@@ -10,11 +9,11 @@ version = 2
 
 sublist : List a -> List a -> ListComparison
 sublist a b =
-  if trampoline (a `equals` b) then
+  if a `equals` b then
     Equal
-  else if List.isEmpty a then
+  else if isEmpty a then
     Sublist
-  else if List.isEmpty b then
+  else if isEmpty b then
     Superlist
   else if a `is_sublist` b then
     Sublist
@@ -26,24 +25,21 @@ sublist a b =
 is_sublist : List a -> List a -> Bool
 is_sublist a b =
   let
-    lenA = List.length a
-    lenB = List.length b
+    lenA = length a
   in
-    if lenB < lenA then
+    if (length b) < lenA then
       False
-    else if trampoline (a `equals` (List.take lenA b)) then
+    else if a `equals` (take lenA b) then
       True
     else
-      a `is_sublist` (List.drop 1 b)
+      a `is_sublist` (drop 1 b)
 
-equals : List a -> List a -> Trampoline Bool
+equals : List a -> List a -> Bool
 equals a b =
   case (a, b) of
-    ([], []) -> Done True
-    ([], _) -> Done False
-    (_, []) -> Done False
+    ([], []) -> True
     (ha :: ta, hb :: tb) -> if ha /= hb then
-                              Done False
+                              False
                             else
-                              Continue (\() -> ta `equals` tb)
-  
+                              ta `equals` tb
+    _ -> False
