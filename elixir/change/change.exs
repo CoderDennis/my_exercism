@@ -18,29 +18,29 @@ defmodule Change do
   @spec generate(integer, list) :: {:ok, map} | :error
   def generate(_, []), do: :error
   def generate(amount, values) do
-    change_from_sorted_coins(amount, Enum.sort(values))
+    values
+    |> Enum.sort
+    |> Enum.reverse
+    |> change_from_reverse_sorted_coins(amount)
+    |> ensure_all_values_included(values)
   end
 
-  @spec change_from_sorted_coins(integer, list) :: {:ok, map} | :error
-  defp change_from_sorted_coins(amount, [smallest_coin | _]) when amount < smallest_coin, do: :error
-  defp change_from_sorted_coins(amount, values) do
-    { :ok,
-      Map.merge(
-        Map.new(values, &({&1, 0})),
-        change_from_reverse_sorted_coins(amount, Enum.reverse(values))
-      )
-    }
-  end
-
-  defp change_from_reverse_sorted_coins(0, []), do: %{}
-  defp change_from_reverse_sorted_coins(_, []), do: :error
-  defp change_from_reverse_sorted_coins(amount, [largest_coin | coins]) do
+  @spec change_from_reverse_sorted_coins(list, integer) :: map | :error
+  defp change_from_reverse_sorted_coins([], 0), do: %{}
+  defp change_from_reverse_sorted_coins([], _), do: :error
+  defp change_from_reverse_sorted_coins([largest_coin | coins], amount) do
     largest_coin_count = div amount, largest_coin
     remaining_amount = rem amount, largest_coin
-    case change_from_reverse_sorted_coins(remaining_amount, coins) do
-      :error -> change_from_reverse_sorted_coins(amount, coins)
+    case change_from_reverse_sorted_coins(coins, remaining_amount) do
+      :error -> change_from_reverse_sorted_coins(coins, amount)
       change -> Map.merge(%{largest_coin => largest_coin_count}, change)
     end
+  end
+
+  @spec ensure_all_values_included(:error | map, list) :: {:ok, map} | :error
+  defp ensure_all_values_included(:error, _), do: :error
+  defp ensure_all_values_included(result, values) do
+    {:ok, Map.merge(Map.new(values, &({&1, 0})), result)}
   end
 
 end
