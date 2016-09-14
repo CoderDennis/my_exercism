@@ -1,0 +1,6 @@
+TestResult.xml
+*.swp
+.vs
+bin/
+obj/
+packages/
