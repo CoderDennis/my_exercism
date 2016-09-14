@@ -19,8 +19,7 @@ defmodule Change do
   def generate(_, []), do: :error
   def generate(amount, values) do
     values
-    |> Enum.sort
-    |> Enum.reverse
+    |> Enum.sort(&>/2)
     |> change_from_reverse_sorted_coins(amount)
     |> ensure_all_values_included(values)
   end
@@ -33,7 +32,7 @@ defmodule Change do
     remaining_amount = rem amount, largest_coin
     case change_from_reverse_sorted_coins(coins, remaining_amount) do
       :error -> change_from_reverse_sorted_coins(coins, amount)
-      change -> Map.merge(%{largest_coin => largest_coin_count}, change)
+      change -> Map.put(change, largest_coin, largest_coin_count)
     end
   end
 
