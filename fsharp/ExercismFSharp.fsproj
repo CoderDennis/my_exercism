@@ -52,8 +52,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Content Include="packages.config" />
-    <Compile Include="hello-world\HelloWorld.fs" />
-    <Compile Include="hello-world\HelloWorldTest.fs" />
+    <Compile Include="difference-of-squares\DifferenceOfSquares.fs" />
+    <Compile Include="difference-of-squares\DifferenceOfSquaresTest.fs" />
+    <None Include="difference-of-squares\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
