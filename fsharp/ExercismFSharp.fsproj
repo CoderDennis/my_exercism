@@ -51,10 +51,10 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="grains\Grains.fs" />
+    <Compile Include="grains\GrainsTest.fs" />
     <Content Include="packages.config" />
-    <Compile Include="difference-of-squares\DifferenceOfSquares.fs" />
-    <Compile Include="difference-of-squares\DifferenceOfSquaresTest.fs" />
-    <None Include="difference-of-squares\README.md" />
+    <None Include="grains\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
