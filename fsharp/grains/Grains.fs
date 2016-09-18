@@ -1,9 +1,7 @@
 ﻿module Grains
 
-let rec square n =
-    match n with
-    | 1 -> 1I
-    | n -> 2I * (square (n - 1))
+let square n =
+    2I ** (n - 1)
 
 let total =
     {1..64}
