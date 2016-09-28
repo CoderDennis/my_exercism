@@ -51,7 +51,10 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="kindergarten-garden\KinderGartenGarden.fs" />
+    <Compile Include="kindergarten-garden\KinderGartenGardenTest.fs" />
     <Content Include="packages.config" />
+    <None Include="kindergarten-garden\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
