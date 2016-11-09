@@ -1,28 +1,28 @@
 ﻿module Sieve
 
 type Candidate =
-    | Prime of int
-    | Composite of int
-    | Unchecked of int
+    | Unmarked of int
+    | Marked of int
 
-let mark p range =
-    range
-    |> Seq.map (function
-        | Unchecked i -> if i = p then Prime i elif i % p = 0 then Composite i else Unchecked i
+let private mark prime range =
+    range 
+    |> List.map (
+        function
+        | Unmarked i when i % prime = 0 -> Marked i
         | c -> c)
 
-let rec sieve (range: seq<Candidate>) =
-    match (range |> Seq.tryFind (function
-        | Unchecked _ -> true
-        | _ -> false)) with
-    | Some (Unchecked c) -> (mark c range) |> sieve
-    | _ -> range
+let rec private sieve marked =
+    function
+    | [] -> marked |> Seq.rev
+    | ((Unmarked p) as pp) :: tail -> sieve (pp :: marked) (mark p tail)
+    | c :: tail -> sieve (c :: marked) tail 
 
 let primesUpTo limit =
     [2..limit]
-    |> Seq.map (fun i -> Unchecked i)
-    |> sieve
-    |> Seq.map (function
-        | Prime i -> i
+    |> List.map Unmarked
+    |> sieve []
+    |> Seq.map (
+        function
+        | Unmarked i -> i
         | _ -> 0)
     |> Seq.filter ((<) 1)

@@ -51,10 +51,10 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="sieve\Sieve.fs" />
-    <Compile Include="sieve\SieveTest.fs" />
+    <Compile Include="binary-search\BinarySearch.fs" />
+    <Compile Include="binary-search\BinarySearchTest.fs" />
     <Content Include="packages.config" />
-    <None Include="sieve\README.md" />
+    <None Include="binary-search\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
