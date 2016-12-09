@@ -8,20 +8,8 @@ defmodule Luhn do
     |> String.to_integer
     |> Integer.digits
     |> Enum.reverse
-    |> sum_digits(false, 0)
+    |> sum_digits(1, 0)
   end
-
-  @spec sum_digits(list, boolean, integer) :: integer
-  defp sum_digits([], _, sum), do: sum
-  defp sum_digits([h|t], true, sum) do
-     sum_digits(t, false, sum + adjust_double(h * 2))
-  end
-  defp sum_digits([h|t], false, sum) do
-    sum_digits(t, true, sum + h)
-  end
-
-  defp adjust_double(double) when double > 9, do: double - 9
-  defp adjust_double(double), do: double
 
   @doc """
   Checks if the given number is valid via the luhn formula
@@ -44,6 +32,20 @@ defmodule Luhn do
                   |> adjust_check_digit
     "#{number}#{check_digit}"
   end
+
+  @spec sum_digits(list, integer, integer) :: integer
+  defp sum_digits([], _, sum), do: sum
+  defp sum_digits([h|t], multiple, sum) do
+     sum_digits(t, next_multiple(multiple), sum + adjust_digit(h * multiple))
+  end
+
+  # alternates between values 1 and 2
+  defp next_multiple(multiple) do
+    abs(multiple - 3)
+  end
+
+  defp adjust_digit(digit) when digit > 9, do: digit - 9
+  defp adjust_digit(digit), do: digit
 
   defp adjust_check_digit(0), do: 0
   defp adjust_check_digit(remainder), do: 10 - remainder
